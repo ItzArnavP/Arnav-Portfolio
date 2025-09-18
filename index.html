@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arnav Palle — Futuristic (Standalone v5)</title>
+<style>
+  /* ===== Variables ===== */
+  :root{
+    --bg: #0b1020; --bg-soft:#0e1530;
+    --text:#e6e9f5; --muted:#a7b0c4;
+    --accent:#7c8cff; --accent2:#00e6a1;
+    --radius:18px; --radius-lg:22px; --border:rgba(255,255,255,.12);
+    --shadow-lg:0 20px 40px rgba(2,6,23,.35);
+    --ring:0 0 0 3px rgba(124,140,255,.55);
+  }
+  /* ===== Base ===== */
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(124,140,255,.15), transparent 60%),
+      radial-gradient(900px 500px at 90% 10%, rgba(0,230,161,.12), transparent 55%),
+      linear-gradient(180deg, var(--bg), var(--bg-soft));
+    font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    line-height:1.55;
+  }
+  h1,h2,h3{letter-spacing:-.01em;margin:0 0 .25rem 0}
+  p{margin:.75rem 0}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1100px;margin:0 auto;padding:0 16px}
+  .section{padding:64px 0}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)}
+  /* Motion safety */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+  }
+  /* ===== Nav ===== */
+  .nav{position:sticky;top:0;z-index:40;background:rgba(12,18,40,.7);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.09)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:700}
+  .brand-dot{width:20px;height:20px;border-radius:9999px;background:linear-gradient(180deg,#7c8cff,#5a67ff)}
+  .nav-links{display:none;gap:24px;font-weight:600;opacity:.85}
+  .nav a:focus-visible{outline:none;box-shadow:var(--ring);border-radius:8px}
+  @media (min-width:768px){.nav-links{display:flex}}
+  .nav-link{position:relative}
+  .nav-link::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+  .nav-link:hover::after,.nav-link:focus-visible::after{transform:scaleX(1)}
+
+  /* ===== Cards & List defaults ===== */
+  .card{
+    position:relative;border-radius:var(--radius-lg);
+    border:1px solid var(--border);
+    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+    backdrop-filter:blur(8px);box-shadow:var(--shadow-lg);padding:24px;
+    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .card::before{
+    content:"";position:absolute;inset:-1px;border-radius:calc(var(--radius-lg) + 2px);
+    background:linear-gradient(135deg,rgba(124,140,255,.45),rgba(0,230,161,.35));
+    filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .3s,filter .3s
+  }
+  .card:hover::before,.card:focus-within::before{opacity:.4;filter:blur(14px)}
+  .card:hover{transform:translateY(-3px);border-color:rgba(124,140,255,.5);
+    box-shadow:0 10px 30px rgba(124,140,255,.2),0 18px 60px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.06)}
+  .card:focus-within{box-shadow:var(--ring),var(--shadow-lg)}
+
+  /* Lists — consistent everywhere */
+  ul{list-style:disc;padding-left:1.25rem;margin:0}
+  li{line-height:1.7}
+  li+li{margin-top:.35rem}
+  li::marker{color:var(--accent)}
+
+  /* ===== Hero ===== */
+  .hero{display:grid;gap:40px;align-items:center}
+  @media (min-width:900px){.hero{grid-template-columns:1fr 1fr}}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;border-radius:9999px;padding:6px 12px;
+    border:1px solid rgba(124,140,255,.35);
+    background:linear-gradient(180deg,rgba(124,140,255,.18),rgba(124,140,255,.05));
+    font-weight:600;font-size:.9rem}
+  .accent{color:var(--accent);text-shadow:0 0 24px rgba(124,140,255,.35)}
+  .hero-visual{position:relative}
+  .holo{height:0;padding-bottom:100%;border-radius:24px;border:1px solid rgba(255,255,255,.14);
+    background:
+      radial-gradient(200px 120px at 20% 20%, rgba(124,140,255,.35), transparent 60%),
+      radial-gradient(220px 140px at 80% 30%, rgba(0,230,161,.25), transparent 65%),
+      linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 24px 50px rgba(0,0,0,.45)}
+  .float-card{position:absolute;left:-16px;bottom:-16px;transform:rotate(2deg)}
+
+  .muted{color:var(--muted)}
+
+  /* ===== Buttons ===== */
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+  .btn{position:relative;display:inline-block;padding:10px 18px;border-radius:9999px;
+    border:1px solid rgba(255,255,255,.18);
+    background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
+    box-shadow:0 8px 24px rgba(124,140,255,.14);
+    font-weight:700}
+  .btn:hover{transform:translateY(-1px);border-color:rgba(124,140,255,.5);box-shadow:0 14px 38px rgba(124,140,255,.25)}
+  .btn:focus-visible{outline:none;box-shadow:var(--ring)}
+  .btn::after{
+    content:"";position:absolute;inset:0;border-radius:9999px;padding:1px;
+    background:linear-gradient(120deg,rgba(124,140,255,0),rgba(124,140,255,.6),rgba(0,230,161,0));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude; opacity:.3; filter:blur(.5px);
+    transition:opacity .25s, filter .25s
+  }
+  .btn:hover::after{opacity:.9;filter:blur(1px)}
+  .btn-primary{background:linear-gradient(180deg,rgba(124,140,255,.35),rgba(124,140,255,.15));border-color:rgba(124,140,255,.55)}
+  .btn-ghost{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border-color:rgba(255,255,255,.18)}
+
+  /* ===== Academic Journey (unchanged from v4) ===== */
+  .aj-card{position:relative;padding:28px;border-radius:24px;border:1px solid rgba(255,255,255,.14);
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 20px 40px rgba(0,0,0,.35);
+    display:grid;gap:20px}
+  @media (min-width:960px){.aj-card{grid-template-columns: 1.2fr 1fr 1fr}}
+  .aj-left h3{font-size:1.6rem;line-height:1.2;margin:0 0 6px 0;font-weight:800}
+  .aj-left .dates{font-size:.95rem;color:var(--muted)}
+  .aj-col h4{font-size:1rem;font-weight:800;margin:0 0 8px 0}
+  .aj-card::after{content:"";position:absolute;inset:-1px;border-radius:28px;background:linear-gradient(135deg,rgba(124,140,255,.4),rgba(0,230,161,.35));opacity:.0;filter:blur(10px);transition:opacity .3s,filter .3s;pointer-events:none}
+  .aj-card:hover::after,.aj-card:focus-within::after{opacity:.45;filter:blur(14px)}
+  .aj-card:hover{transform:translateY(-3px);transition:transform .3s ease}
+
+  /* ===== About (reverted to 3 separate cards) ===== */
+  .grid-3{display:grid;gap:24px}
+  @media (min-width:960px){.grid-3{grid-template-columns:repeat(3,1fr)}}
+  .about-card h3{font-size:1.3rem;font-weight:800;margin:0 0 12px 0}
+  .about-card ul{margin-top:0}
+  .about-card li::marker{color:#6fa3ff}
+
+  /* ===== Experience (reverted to card list like reference) ===== */
+  .exp-grid{display:grid;gap:28px}
+  @media (min-width:960px){.exp-grid{grid-template-columns:repeat(3,1fr)}}
+  .exp-card{padding:28px}
+  .exp-date{font-size:.95rem;color:var(--muted);margin-bottom:6px}
+  .exp-title{font-size:1.35rem;font-weight:800;margin:0 0 6px 0}
+  .exp-org{font-size:1rem;margin-bottom:12px}
+  .exp-desc{font-size:1rem;color:var(--muted)}
+
+  /* ===== Let's Connect (reverted to pill cards with bold text) ===== */
+  .contact-grid{display:grid;gap:24px}
+  @media (min-width:960px){.contact-grid{grid-template-columns:repeat(3,1fr)}}
+  .contact-card{padding:22px;border-radius:24px}
+  .contact-link{font-weight:800;display:flex;align-items:center;gap:10px}
+  .dot{width:8px;height:8px;border-radius:9999px;background:linear-gradient(180deg,#7c8cff,#00e6a1)}
+
+  /* Footer chips */
+  .chip-sm{display:inline-flex;gap:.5rem;padding:6px 12px;border-radius:9999px;border:1px solid rgba(124,140,255,.35);
+    background:linear-gradient(180deg,rgba(124,140,255,.15),rgba(124,140,255,.03));font-size:.9rem}
+</style>
+</head>
+<body>
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#home" aria-label="Skip to Home">
+        <span class="brand-dot" aria-hidden="true"></span> Arnav Palle
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#academics">Academic Journey</a>
+        <a class="nav-link" href="#skills">Skills</a>
+        <a class="nav-link" href="#experience">Experience</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/arnav-palle-1a16b6280" target="_blank" rel="noreferrer" aria-label="Open Arnav's LinkedIn">LinkedIn ↗</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="section">
+    <div class="container hero">
+      <div>
+        <span class="chip">Industrial Engineering (Aspiring) — Economics & Finance Track</span>
+        <h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-top:12px;">
+          Building Better Systems For <br class="hide-sm">
+          <span class="accent">People &amp; Products.</span>
+        </h1>
+        <p class="muted" style="max-width:42ch;margin-top:12px;">
+          Sophomore at the University of Kentucky preparing to transfer back to UIUC
+          to pursue Industrial Engineering (Economics &amp; Finance Track). I am passionate about
+          automotive innovation, EVs, and applying AI and data to optimize operations and user experiences.
+        </p>
+        <div class="cta">
+          <a href="#contact" class="btn btn-primary">Get In Touch</a>
+          <a href="#experience" class="btn btn-ghost">View Experiences</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="holo"></div>
+        <div class="float-card card" tabindex="0">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:24px;height:24px;border-radius:9999px;background:linear-gradient(180deg,#7c8cff,#00e6a1)"></div>
+            <div>
+              <div style="font-weight:700">Current Coursework</div>
+              <div class="muted" style="font-size:.8rem">PHY 231 · PHY 241 · MA 113 · CS 115 · SPA 201</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider container"></div>
+
+  <!-- About (reverted) -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:900;margin-bottom:8px">About Me</h2>
+      <p class="muted" style="max-width:70ch;margin-bottom:24px">Engineering × Economics × Finance — with a focus on Automotive Innovation, EVs, and Applied AI.</p>
+      <div class="grid-3">
+        <article class="card about-card" tabindex="0">
+          <h3>Academic Interests</h3>
+          <ul>
+            <li>Systems thinking</li>
+            <li>Data-driven decision making</li>
+            <li>Operations research</li>
+            <li>The intersection of engineering with markets and human factors</li>
+          </ul>
+        </article>
+        <article class="card about-card" tabindex="0">
+          <h3>Career Aspirations</h3>
+          <ul>
+            <li>Industrial and automotive engineering roles</li>
+            <li>Blend leadership and product operations</li>
+            <li>Drive innovation in EV and AI-enhanced manufacturing</li>
+          </ul>
+        </article>
+        <article class="card about-card" tabindex="0">
+          <h3>Guiding Values</h3>
+          <ul>
+            <li>Learn fast</li>
+            <li>Build together</li>
+            <li>Deliver measurable impact for users and the business</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider container"></div>
+
+  <!-- Academic Journey (unchanged) -->
+  <section id="academics" class="section">
+    <div class="container">
+      <h2 style="font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;margin-bottom:16px">Academic Journey</h2>
+      <p class="muted" style="max-width:60ch;margin-bottom:24px">A snapshot of where I have studied and the coursework shaping my path.</p>
+
+      <!-- STEAM -->
+      <article class="aj-card" tabindex="0" aria-label="STEAM Academy">
+        <div class="aj-left">
+          <h3>STEAM Academy (High School)</h3>
+          <div class="dates">2020 – 2024</div>
+        </div>
+        <div class="aj-col">
+          <ul>
+            <li>Weighted GPA 4.71 | Unweighted 3.95</li>
+            <li>Dual Credit Coursework Through BCTC</li>
+            <li>STEM-Focused Pathway with Engineering &amp; Advanced Sciences</li>
+            <li>STEAM Ambassador</li>
+            <li>Advisory Council Member</li>
+            <li>President, Junior &amp; Senior Classes</li>
+            <li>BCTC Dean's List</li>
+          </ul>
+        </div>
+        <div class="aj-col">
+          <h4>Courses Taken</h4>
+          <ul>
+            <li>Foundations of Engineering Tech</li>
+            <li>Engineering 2</li>
+            <li>Advanced Chemistry / Advanced Chemistry 2</li>
+            <li>Earth &amp; Space Science (Intro Physics Track)</li>
+          </ul>
+          <h4 style="margin-top:12px">BCTC Dual Credit — Courses Taken</h4>
+          <ul>
+            <li>BAS 160 — Introduction to Business</li>
+            <li>STA 210 — Statistical Reasoning</li>
+            <li>MAT 150 — College Algebra</li>
+            <li>BAS 120 — Personal Finance</li>
+            <li>CIT 111 — Computer Hardware &amp; Software</li>
+            <li>CIT 105 — Introduction to Computers</li>
+          </ul>
+        </div>
+      </article>
+
+      <div style="height:16px"></div>
+
+      <!-- UIUC -->
+      <article class="aj-card" tabindex="0" aria-label="University of Illinois Urbana-Champaign">
+        <div class="aj-left">
+          <h3>University of Illinois Urbana-Champaign (Freshman Year)</h3>
+          <div class="dates">2024 – 2025</div>
+        </div>
+        <div class="aj-col">
+          <ul>
+            <li>Grainger College of Engineering</li>
+            <li>Introductory Engineering and Chemistry Sequence</li>
+          </ul>
+        </div>
+        <div class="aj-col">
+          <h4>Courses Taken</h4>
+          <ul>
+            <li>CHEM 102 — General Chemistry I</li>
+            <li>CHEM 103 — General Chemistry Lab I</li>
+            <li>ENG 177 — Spatial Visualization</li>
+            <li>MATH 115 — Preparation for Calculus</li>
+          </ul>
+        </div>
+      </article>
+
+      <div style="height:16px"></div>
+
+      <!-- UK -->
+      <article class="aj-card" tabindex="0" aria-label="University of Kentucky">
+        <div class="aj-left">
+          <h3>University of Kentucky (Sophomore, Current)</h3>
+          <div class="dates">2025 – Present</div>
+        </div>
+        <div class="aj-col">
+          <ul>
+            <li>Pursuing transfer back to UIUC for Industrial Engineering (Economics &amp; Finance Track)</li>
+            <li>Building strong STEM fundamentals and programming skills</li>
+          </ul>
+        </div>
+        <div class="aj-col">
+          <h4>Courses I'm Taking</h4>
+          <ul>
+            <li>PHY 231 — General University Physics</li>
+            <li>PHY 241 — General University Physics Lab</li>
+            <li>MA 113 — Calculus I</li>
+            <li>CS 115 — Intro to Programming</li>
+            <li>SPA 201 — Intermediate Spanish III</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="divider container"></div>
+
+  <!-- Skills (unchanged structure from v4 default card grid) -->
+  <section id="skills" class="section">
+    <div class="container">
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700">Skills</h2>
+        <p class="muted" style="max-width:60ch">Blending analytical rigor with practical, hands-on work.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card" tabindex="0">
+          <h3 style="font-weight:700">Academic</h3>
+          <ul>
+            <li>Problem Solving</li>
+            <li>Technical Writing</li>
+            <li>Lab Documentation</li>
+            <li>Data Analysis</li>
+          </ul>
+        </article>
+        <article class="card" tabindex="0">
+          <h3 style="font-weight:700">Engineering</h3>
+          <ul>
+            <li>Circuit Analysis</li>
+            <li>Python</li>
+            <li>Chemistry Labs</li>
+            <li>Physics Experiments</li>
+          </ul>
+        </article>
+        <article class="card" tabindex="0">
+          <h3 style="font-weight:700">Professional</h3>
+          <ul>
+            <li>Tutoring &amp; Mentoring</li>
+            <li>Leadership</li>
+            <li>Project Collaboration</li>
+            <li>Communication</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider container"></div>
+
+  <!-- Experience (reverted) -->
+  <section id="experience" class="section">
+    <div class="container">
+      <h2 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:900;margin-bottom:8px">Experience</h2>
+      <p class="muted" style="max-width:70ch;margin-bottom:24px">Internships and roles that shaped how I learn and lead.</p>
+      <div class="exp-grid">
+        <article class="card exp-card" tabindex="0">
+          <div class="exp-date">2024 – 2025</div>
+          <h3 class="exp-title">FCPS Internship</h3>
+          <div class="exp-org">Fayette County Public Schools (FCPS) — The HILL</div>
+          <p class="exp-desc">Contributed to planning for The HILL, a new technical high school in Lexington, collaborating with educators and local industry on student-led innovation frameworks and pathway-aligned technology evaluations.</p>
+        </article>
+        <article class="card exp-card" tabindex="0">
+          <div class="exp-date">2023</div>
+          <h3 class="exp-title">Civil Engineering Intern</h3>
+          <div class="exp-org">University of Kentucky</div>
+          <p class="exp-desc">Hands-on exposure to engineering practices, problem scoping, and solution development within a university environment.</p>
+        </article>
+        <article class="card exp-card" tabindex="0">
+          <div class="exp-date">2021 – 2023</div>
+          <h3 class="exp-title">Tutor (Math &amp; Reading, K-12)</h3>
+          <div class="exp-org">Kumon Learning Center</div>
+          <p class="exp-desc">Supported students' foundational skills, communicating complex ideas simply while tracking progress and reinforcing good study habits.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider container"></div>
+
+  <!-- Contact (reverted) -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:900;margin-bottom:8px">Let's Connect</h2>
+      <p class="muted" style="max-width:70ch;margin-bottom:24px">Open to internships in industrial and automotive engineering, operations, and data-driven roles.</p>
+      <div class="contact-grid">
+        <article class="card contact-card" tabindex="0">
+          <a class="contact-link" href="https://www.linkedin.com/in/arnav-palle-1a16b6280" target="_blank" rel="noreferrer">LinkedIn — arnav-palle-1a16b6280</a>
+        </article>
+        <article class="card contact-card" tabindex="0">
+          <a class="contact-link" href="mailto:arnavpalle@outlook.com">arnavpalle@outlook.com</a>
+        </article>
+        <article class="card contact-card" tabindex="0">
+          <span class="contact-link"><span class="dot" aria-hidden="true"></span> Lexington, KY — Champaign, IL (Plans)</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="padding:32px 0;border-top:1px solid rgba(255,255,255,.12);background:rgba(12,18,40,.6);backdrop-filter:blur(8px)">
+    <div class="container" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+      <div class="muted" style="font-size:.95rem">© <span id="year"></span> Arnav Palle — Built with vanilla HTML/CSS</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="chip-sm">Industrial Engineering (Target)</span>
+        <span class="chip-sm">Economics &amp; Finance Track</span>
+        <span class="chip-sm">Automotive · EV · AI</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // Set current year and keep console clean
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
